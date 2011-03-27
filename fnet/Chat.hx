@@ -15,9 +15,9 @@ class Chat extends NetGroup {
 	
 	public dynamic function onMessage( m : ChatMessage ) : Void;
 	
-	//public var group : NetGroup;
+	public var username(default,null) : String;
+	//public var group(default,null) : NetGroup;
 	
-	var username : String;
 	var sequence : Int;
 	
 	public function new( username : String, group : String, nc : NetConnection ) {

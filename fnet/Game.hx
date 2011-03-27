@@ -88,7 +88,7 @@ class Game {
 	}
 	
 	public function disconnect() {
-		if( !connected || nc == null )
+		if( !connected )
 			return;
 		nc.close();
 		nc.removeEventListener( NetStatusEvent.NET_STATUS, netStatus );
