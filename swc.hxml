@@ -1,0 +1,5 @@
+
+-swf-version 10.1
+-swf fnet.swc
+fnet.Game
+fnet.FileShare
