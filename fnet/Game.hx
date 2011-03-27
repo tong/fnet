@@ -127,10 +127,19 @@ class Game {
 			chat = new Chat( me.name, group.groupspecWithAuthorizations(), nc );
 			chat.addEventListener( NetStatusEvent.NET_STATUS, netStatus, false, 0, true );
 			
-		case "NetConnection.Connect.Closed","NetGroup.Connect.Failed": 
+		case "NetConnection.Connect.Closed",
+			 "NetConnection.Connect.Failed",
+			 "NetConnection.Connect.Rejected",
+			 "NetConnection.Connect.AppShutdown",
+			 "NetConnection.Connect.InvalidApp",
+			 "NetGroup.Connect.Failed" :
 			cleanup();
 			onDisconnect( e.toString() );
-			
+		
+		case "NetStream.Connect.Rejected",
+			 "NetStream.Connect.Failed" :
+			//TODO
+		
 		case "NetGroup.Connect.Success" :
 			me.address = chat.convertPeerIDToGroupAddress( nc.nearID );
 			connected = true;
@@ -164,32 +173,27 @@ class Game {
 			var i = e.info;
 			if( i.message.destination == me.address ) {
 				#if DEBUG_FNET
-				trace( "ListRoutingObject:"+i.message.type );
+				trace( "ListRoutingObject:"+Std.string(i.message.type).toUpperCase() );
 				#end
 				switch( i.message.type ) {
 				case ListRouting.REQUEST :
-					trace("REQUEST " );
+					//trace("REQUEST " );
 					var r = new ListRouting( ListRouting.RESPONSE );
 					r.destination = i.message.sender;
 					r.time = Std.int( Lib.getTimer() );
 					r.peers = createPeerRoutingObject();
 					//TODO (custom) data callback here
-					trace(Std.parseFloat(i.message.time) +"::::::::::::::::"+ Lib.getTimer());
 					if( Std.parseFloat(i.message.time) < Lib.getTimer() ) {
-						trace("ATTACH DATA");
 						r.info = onDataRequest();
 					}
 					chat.sendToNearest( r, r.destination );
 					
 				case ListRouting.RESPONSE :
-					trace("RESPONSE " );
+					//trace("RESPONSE " );
 					var peerlist : Dynamic = i.message.peers;
 					var neighborsTime = Std.parseInt( i.message.time );
-					trace(neighborsTime);
 					var neighborsAge = 0.0;
 					for( id in Reflect.fields( peerlist ) ) {
-						//var _peer =  Reflect.field( peerlist, id );
-						//trace(neighborsAge);
 						var p : Dynamic =  Reflect.field( peerlist, id );
 						neighborsAge = neighborsTime - p.stamp + 1000;
 						if( peers.exists( id ) ) {
