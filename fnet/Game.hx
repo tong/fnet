@@ -64,8 +64,8 @@ class Game {
 	var expireTimer : Timer;
 	
 	public function new( serverAddr : String, groupName : String,
-						 //keepAliveTime : UInt = 120000, expireTimeout : UInt = 300000, expireCheckTime : UInt = 10000,
-						 keepAliveTime : UInt = 3000, expireTimeout : UInt = 10000, expireCheckTime : UInt = 3000,
+						 keepAliveTime : UInt = 120000, expireTimeout : UInt = 300000, expireCheckTime : UInt = 10000,
+						 //keepAliveTime : UInt = 3000, expireTimeout : UInt = 10000, expireCheckTime : UInt = 3000,
 						 ?streamMethod : String ) {
 		
 		this.serverAddress = serverAddr;
@@ -199,7 +199,7 @@ class Game {
 						if( peers.exists( id ) ) {
 							var peer = peers.get(id);
 							var localAge = Lib.getTimer() - peer.stamp;
-							trace("localAgelocalAge "+neighborsAge +" : "+ localAge);
+						//	trace("localAgelocalAge "+neighborsAge +" : "+ localAge);
 							if( neighborsAge < localAge ) {
 								peer.stamp = Lib.getTimer() - neighborsAge;
 							}
@@ -210,12 +210,11 @@ class Game {
 						}
 					}
 					// TODO
-					trace(i.message.info != null);
-					trace(Std.parseFloat(i.message.time) > Lib.getTimer());
+					//trace(i.message.info != null);
+					//trace(Std.parseFloat(i.message.time) > Lib.getTimer());
 					if( i.message.info != null &&
 						Std.parseFloat(i.message.time) > Lib.getTimer() ) {
 						onInfo( i.message.info );
-						//dispatchEvent( new GameEvent( GameEvent.INFO, i.message.data, i.message.sender, true, false ) );
 					}
 				}
 			} else if( !i.fromLocal ) {
@@ -276,6 +275,7 @@ class Game {
 		peer.stamp = Lib.getTimer();
 		peers.set( peer.id, peer );
 		var ns = new NetStream( nc, peer.id );
+		ns.addEventListener( NetStatusEvent.NET_STATUS, netStatus, false, 0, true );
 		ns.client = this;
 		ns.play( STREAMNAME );
 		recieveStreams.set( peer.id, ns );
