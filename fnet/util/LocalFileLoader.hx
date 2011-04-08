@@ -12,8 +12,7 @@ import flash.utils.ByteArray;
 class LocalFileLoader extends EventDispatcher {
 	
 	public var data(getData,null) : ByteArray;
-	
-	var fr : FileReference;
+	public var fr(default,null) : FileReference;
 	
 	public function new() {
 		super();

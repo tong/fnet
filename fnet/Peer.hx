@@ -1,13 +1,12 @@
 package fnet;
 
-class GamePeer /*implements Dynamic*/ {
-	
+class Peer {
+
 	public var id : String;
 	public var name : String;
 	public var address : String;
 	public var stamp : Float;
 	public var details : Dynamic;
 	
-	public function new() {}
-	
+	public function new( ) {}
 }
