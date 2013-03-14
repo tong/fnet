@@ -1,5 +1,4 @@
 
--swf-version 10.1
 -swf fnet.swc
 fnet.RealtimeGame
 fnet.FileShare

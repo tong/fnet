@@ -1,4 +1,4 @@
 
 FNET
 ====
-HaXe/Flash network/p2p tools.
+Haxe/Flash p2p/rtmfp tools.
