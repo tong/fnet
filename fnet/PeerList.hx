@@ -35,11 +35,11 @@ class PeerList extends EventDispatcher {
 	/**
 		A peer request callback for the current game state
 	*/
-	public dynamic function onDataRequest() : Dynamic;
+	public dynamic function onDataRequest() : Dynamic { return null; }
 	
 	public var me(default,null) : Peer;
-	public var peers(default,null) : Hash<Peer>;
-	public var numPeers(getNumPeers,null) : UInt;
+	public var peers(default,null) : Map<String,Peer>;
+	public var numPeers(get,null) : UInt;
 	public var groupname(default,null) : String;
 	public var connected(default,null) : Bool;
 	public var listRecieved(default,null) : Bool;
@@ -66,7 +66,7 @@ class PeerList extends EventDispatcher {
 		cleanup();
 	}
 	
-	inline function getNumPeers() : UInt {
+	inline function get_numPeers() : UInt {
 		return Lambda.count( peers );
 	}
 	
@@ -244,7 +244,7 @@ class PeerList extends EventDispatcher {
 	function cleanup() {
 		connected = neighboured = listRecieved = false;
 		postSequence = 0;
-		peers = new Hash();
+		peers = new Map();
 		me = new Peer();
 	}
 	

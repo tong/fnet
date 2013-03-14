@@ -11,7 +11,8 @@ import fnet.events.GroupEvent;
 /**
 	Full p2p mesh network for low latency realtime games.
 */
-@:require(flash10_1) class RealtimeGame extends PeerList {
+@:require(flash10_1)
+class RealtimeApp extends PeerList {
 	
 	static inline var STREAMNAME = 'media';
 	
@@ -19,7 +20,7 @@ import fnet.events.GroupEvent;
 	public var streamMethod(default,null) : String;
 	public var ns(default,null) : NetStream;
 	
-	var streams : Hash<NetStream>;
+	var streams : Map<String,NetStream>;
 	
 	public function new( serverAddr : String, groupname : String,
 					  	 ?streamMethod : String,
@@ -65,7 +66,7 @@ import fnet.events.GroupEvent;
 		case "NetConnection.Connect.Success" :
 			me.id = nc.nearID;
 			me.stamp = Lib.getTimer();
-			streams = new Hash();
+			streams = new Map();
 			ns = new NetStream( nc, streamMethod );
 			ns.addEventListener( NetStatusEvent.NET_STATUS, netStatus, false, 0, true );
 			ns.publish( STREAMNAME );
